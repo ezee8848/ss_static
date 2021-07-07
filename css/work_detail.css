@@ -37,6 +37,10 @@
     background: red;
 }
 
+.checklist{
+    width:70%;
+}
+
 .workname {
     background-color: #eeeeee;
     color: #23b1f7;
@@ -62,8 +66,27 @@
 
 .more_picture{
     width: 70%;
-    margin-left:15%
 }
+
+#workImages{
+    margin-bottom:100px;
+}
+
+
+.ul{
+    padding-left: 100px;
+    height: 40px;
+}
+
+.border1{
+    border-top: 1px solid black;
+}
+
+#workImages{
+    text-align:center;
+}
+
+/*购物车按钮*/
 
 .fixedbutton{
     position:fixed;
@@ -92,15 +115,45 @@
     color: orange;
 }
 
-.ul{
-    padding-left: 100px;
-    height: 40px;
+/*弹窗*/
+.modal-dialog{
+    position:fixed;
+    left:30%;
+    width:40%;
+    top:30%;
+    height:20%;
 }
 
-.border1{
-    border-top: 1px solid black;
+/*提示弹窗*/
+.modal-dialog-suggest{
+    position:fixed;
+    left:85%;
+    top:80%;
+    width:20%;
+    height:20%;
 }
 
-#workImages{
-    text-align:center;
+.modal-content-suggest{
+    transform: translate(-110%,-50%);
+    background-color: rgba(0,0,0,0.5);
+    border:none;
+}
+
+.btn-modal-suggest,.btn-modal-suggest:hover{
+    background-image:none;
+    background-color:transparent;
+    border: 0;
+    border-radius:0;
+    box-shadow:none;
+    border-bottom:1px solid white ;
+}
+
+.suggest-words{
+    color:white;
+    font-size:1em;
+}
+
+.suggest-input{
+    margin-top:20px;
+    width:100%;
 }

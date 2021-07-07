@@ -22,11 +22,48 @@ http {
     client_body_buffer_size 20M;
 
     keepalive_timeout  65;
+    
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                               '$status $body_bytes_sent "$http_referer" '
+                               '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log /root/starrysea/log/nginx/access.log main;
+    error_log /root/starrysea/log/nginx/error.log info;
+    server {
+	listen 80;
+	server_name www.starrysea.top;
+	rewrite ^(.*) https://$server_name$1 permanent;
+    }
+
+	server{
+		listen 80;
+		server_name data.starrysea.top;
+		root /usr/share/nginx/sdc/;
+		index index.html;
+
+		location ~ /api/{
+			proxy_pass http://127.0.0.1:8081;#api服务器
+			proxy_set_header Real-IP $remote_addr;
+			proxy_set_header Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header NginX-Proxy true;
+			proxy_ssl_session_reuse off;
+			proxy_redirect off;
+		}
+
+		location / {
+			try_files $uri /index.html =404; #react
+		}
+
+	}
 
     server {
-        listen       80;
+	listen      443 ssl http2;
         server_name  localhost;
-
+	ssl_certificate   cert/1530656963968.pem;
+   	 ssl_certificate_key  cert/1530656963968.key;
+    	ssl_session_timeout 5m;
+    	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    	ssl_prefer_server_ciphers on;
 	charset utf-8;
 
         error_page   500 502 503 504  /50x.html;
@@ -35,7 +72,13 @@ http {
 	#	root /usr/share/nginx/html;
 	#	index index1.html;
 	#}
-	location ~* \.(jpg|jpeg|png)$ {
+	location /favicon.ico {
+		gzip off;
+		expires 30d;
+		root img/;
+	}
+	
+	location ~* \.(jpg|jpeg|png|gif)$ {
 		gzip off;
 	   	root /usr/share/nginx/img/;
 	}
@@ -43,16 +86,24 @@ http {
         	root /usr/share/nginx/html/;
     	}
 	location ~* \.css$ {
-        root /usr/share/nginx/min.css/;
-    }
+        	root /usr/share/nginx/min.css/;
+    	}
 	location ~* \.js$ {
-        root /usr/share/nginx/min.js/;
-    }
+        	root /usr/share/nginx/min.js/;
+    	}
 	location ~* \.pdf$ {
-        root /usr/share/nginx/pdf/;
-    }
+        	root /usr/share/nginx/pdf/;
+    	}
 	location / {
 		proxy_pass http://127.0.0.1:8080;
+                proxy_redirect off;  
+        	proxy_http_version 1.1;  
+        	proxy_set_header Upgrade $http_upgrade;  
+        	proxy_set_header Connection "upgrade";  
+       		proxy_set_header Host $host:$server_port;  
+        	proxy_set_header X-Real-IP $remote_addr;  
+        	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 	}
+
    }
 }

@@ -7,7 +7,7 @@ function func2()
     const y = window.scrollY;
     const trigger = maxY - 25;
     if (y >= trigger) {
-        footer.style.marginBottom = "80px";
+        footer.style.marginBottom = "30px";
         footer.style.transition = "margin-bottom 0.25s";
     } else {
         footer.style.margin = "0";
@@ -29,7 +29,7 @@ function countchecked(){
         }
     });
     if(count==0){
-        $("#confbutt").css("background","#ddd")
+        $("#confbutt").css("background","#999")
     }
     else{
         $("#confbutt").css("background","#333")

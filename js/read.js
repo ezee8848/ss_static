@@ -37,7 +37,7 @@ $(function () {
                         str += `<div class="container-fluid">
 						<div class="row workbox">
 							<div class="col-xs-5 workimage">
-								<img src="${work.workCover}" class="workimg img-reponsive"></img>
+								<img src="${work.workCover}" class="workimg img-responsive"></img>
 							</div>
 							<div class="col-xs-7 workdetail">
 								<p  class="h3 worktitle">${work.workName}</p>
